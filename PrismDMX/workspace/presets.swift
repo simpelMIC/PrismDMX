@@ -2,7 +2,7 @@
 //  presets.swift
 //  PrismDMX
 //
-//  Created by Christian Savage on 02.03.24.
+//  Created by simpelMIC on 02.03.24.
 //
 
 import Foundation

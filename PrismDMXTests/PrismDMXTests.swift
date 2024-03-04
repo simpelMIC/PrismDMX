@@ -2,7 +2,7 @@
 //  PrismDMXTests.swift
 //  PrismDMXTests
 //
-//  Created by Christian Savage on 29.02.24.
+//  Created by simpelMIC on 29.02.24.
 //
 
 import XCTest

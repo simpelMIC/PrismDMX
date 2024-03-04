@@ -2,7 +2,7 @@
 //  var.swift
 //  PrismDMX
 //
-//  Created by Christian Savage on 02.03.24.
+//  Created by simpelMIC on 02.03.24.
 //
 
 import Foundation
@@ -52,6 +52,7 @@ struct Universe: Identifiable, Codable {
     var id = UUID()
     var num: Int
     var channels: [DMXChannel]
+    var enabled: Bool
 }
 
 struct DMXChannel: Equatable, Identifiable, Codable {

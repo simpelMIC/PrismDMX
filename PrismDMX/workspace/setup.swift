@@ -2,7 +2,7 @@
 //  setup.swift
 //  PrismDMX
 //
-//  Created by Christian Savage on 01.03.24.
+//  Created by simpelMIC on 01.03.24.
 //
 
 import Foundation
@@ -21,11 +21,15 @@ struct SetupView: View {
                 NavigationLink(destination: sACNSettingsView(sACNSettings: $settings.sACNSettings)) {
                     Text("sACN Settings")
                 }
+                NavigationLink(destination: universeManagementView()) {
+                    Text("Universe Management")
+                }
             }
         }
     }
     
     @State var fixturePresets: [Fixture] = [
+        /*
         //Tour LED 42cm
         Fixture(name: "Expolite TourLED 42cm AR1.d", type: "RGB", startingChannel: 1, universe: 1, channels: [FixtureChannel(num: 1, name: "MASTER", type: "MASTER"), FixtureChannel(num: 2, name: "Red", type: "Red"), FixtureChannel(num: 3, name: "Green", type: "Green"), FixtureChannel(num: 4, name: "Blue", type: "Blue")]),
         //Auro Spot 100/200
@@ -37,9 +41,9 @@ struct SetupView: View {
         //Lixada Mini Gobo Moving Head
         
         //Lixada Mini Moving Head
+         */
     ]
 }
-
 
 struct FixtureSettingsView: View {
     @Binding var groups: [FixtureGroup]
@@ -55,33 +59,59 @@ struct FixtureSettingsView: View {
                 .padding(.top)
             TabView {
                 //
-                List(localGroups.indices, id: \.self) { index in
-                    NavigationLink(destination: GroupView(group: localGroups[index])) {
-                        Text(groups[index].name)
+                VStack {
+                    List(localGroups.indices, id: \.self) { index in
+                        NavigationLink(destination: GroupView(group: $localGroups[index])) {
+                            Text(localGroups[index].name)
+                        }
+                        .contextMenu(ContextMenu(menuItems: {
+                            VStack {
+                                Button {
+                                    groups.remove(at: index)
+                                    localGroups.remove(at: index)
+                                } label: {
+                                    Text("Delete")
+                                }
+                            }
+                        }))
                     }
-                }
-                .tabItem { Text("Groups") }
-                .toolbar(content: {
                     Button {
                         groups.append(FixtureGroup(name: "New Group", fixtures: []))
+                        localGroups.append(FixtureGroup(name: "New Group", fixtures: []))
                     } label: {
-                        Text("New Group")
+                        Text("+")
                     }
-                })
+                    .padding(.bottom, 5)
+                }
+                .tabItem { Text("Groups") }
                 //
-                List(localGroups.indices, id: \.self) { index in
-                    NavigationLink(destination: GroupView(group: localGroups[index])) {
-                        Text(groups[index].name)
+                VStack {
+                    List(localFixtureTemplates.indices, id: \.self) { index in
+                        NavigationLink(destination: FixtureConfigurationView(fixture: $localFixtureTemplates[index])) {
+                            Text(localFixtureTemplates[index].name)
+                        }
+                        .contextMenu(ContextMenu(menuItems: {
+                            Button {
+                                localFixtureTemplates.append(localFixtureTemplates[index])
+                            } label: {
+                                Text("Duplicate")
+                            }
+                            Button {
+                                localFixtureTemplates.remove(at: index)
+                            } label: {
+                                Text("Delete")
+                            }
+                        }))
                     }
-                }
-                .tabItem { Text("Groups") }
-                .toolbar(content: {
                     Button {
-                        groups.append(FixtureGroup(name: "New Group", fixtures: []))
+                        fixtureTemplates.append(Fixture(name: "New Fixture Template", type: "Template", startingChannel: 1, universe: 1, channels: []))
+                        localFixtureTemplates.append(Fixture(name: "New Fixture Template", type: "Template", startingChannel: 1, universe: 1, channels: []))
                     } label: {
-                        Text("New Group")
+                        Text("+")
                     }
-                })
+                    .padding(.bottom, 5)
+                }
+                .tabItem { Text("Fixture Types") }
             }
         }
         .padding(.horizontal)
@@ -97,11 +127,176 @@ struct FixtureSettingsView: View {
     }
 }
 
+//GV1
 struct GroupView: View {
-    var group: FixtureGroup
+    @Binding var group: FixtureGroup
+    
+    @State var localGroup: FixtureGroup = FixtureGroup(name: "When you see this report to the Developer. Code: GV1", fixtures: [])
+    
+    @State var isSheetOpened: Bool = false
     
     var body: some View {
-        Text("Group")
+        VStack {
+            Text(localGroup.name)
+                .font(.system(.largeTitle, weight: .semibold))
+            Text("Edit Fixtures within this group")
+            HStack {
+                Button {
+                    isSheetOpened.toggle()
+                } label: {
+                    Text("Rename \(localGroup.name)")
+                }
+            }
+            List(localGroup.fixtures.indices, id: \.self) { index in
+                NavigationLink(destination: FixtureConfigurationView(fixture: $localGroup.fixtures[index])) {
+                    Text(localGroup.fixtures[index].name)
+                }
+                .contextMenu(ContextMenu(menuItems: {
+                    Button(action: {
+                        localGroup.fixtures.append(localGroup.fixtures[index])
+                    }, label: {
+                        Text("Duplicate")
+                    })
+                    Button {
+                        localGroup.fixtures.remove(at: index)
+                    } label: {
+                        Text("Delete")
+                    }
+
+                }))
+            }
+            HStack {
+                Button {
+                    group.fixtures.append(Fixture(name: "New Fixture", type: "Dimmer", startingChannel: 1, universe: 1, channels: []))
+                    localGroup.fixtures.append(Fixture(name: "New Fixture", type: "Dimmer", startingChannel: 1, universe: 1, channels: []))
+                } label: {
+                    Text("New Fixture")
+                }
+            }
+        }
+        .onAppear {
+            localGroup = group
+            isSheetOpened = false
+        }
+        .onDisappear {
+            group = localGroup
+        }
+        .padding()
+        .sheet(isPresented: $isSheetOpened, content: {
+            VStack {
+                HStack {
+                    TextField(text: $localGroup.name, label: {
+                        Text("Rename\(localGroup.name)")
+                    })
+                }
+                HStack {
+                    Button {
+                        isSheetOpened.toggle()
+                        group = localGroup
+                    } label: {
+                        Text("Close")
+                    }
+                }
+            }
+            .padding(20)
+        })
+    }
+}
+
+//FCV1
+struct FixtureConfigurationView: View {
+    @Binding var fixture: Fixture
+    @State var localFixture: Fixture = Fixture(name: "If you see this send a report to the Developer. Code: FCV1", type: "temp", startingChannel: 1, universe: 1, channels: [])
+    
+    var body: some View {
+        VStack {
+            Text(localFixture.name)
+                .font(.system(.largeTitle, weight: .semibold))
+            HStack {
+                Text("Name")
+                TextField("Name", text: $localFixture.name)
+            }
+            HStack {
+                Text("Type")
+                TextField("Type", text: $localFixture.type)
+            }
+            HStack {
+                Text("starting Address: ")
+                Button {
+                    if localFixture.startingChannel < 512 {
+                        localFixture.startingChannel = localFixture.startingChannel + 1
+                    }
+                } label: {
+                    Text("+")
+                }
+                Text(String(localFixture.startingChannel))
+                Button {
+                    if localFixture.startingChannel > 1 {
+                        localFixture.startingChannel = localFixture.startingChannel - 1
+                    }
+                } label: {
+                    Text("-")
+                }
+            }
+            HStack {
+                Text("Universe: ")
+                Button {
+                    if localFixture.universe < 63999 {
+                        localFixture.universe = localFixture.universe + 1
+                    }
+                } label: {
+                    Text("+")
+                }
+                Text(String(localFixture.universe))
+                Button {
+                    if localFixture.universe > 1 {
+                        localFixture.universe = localFixture.universe - 1
+                    }
+                } label: {
+                    Text("-")
+                }
+            }
+            List(localFixture.channels.indices, id: \.self) { index in
+                NavigationLink(destination: ChannelConfigurationView(channel: $localFixture.channels[index])) {
+                    Text(localFixture.channels[index].name)
+                }
+                .contextMenu(ContextMenu(menuItems: {
+                    Button {
+                        localFixture.channels.append(localFixture.channels[index])
+                    } label: {
+                        Text("Duplicate")
+                    }
+                    Button {
+                        localFixture.channels.remove(at: index)
+                    } label: {
+                        Text("Delete")
+                    }
+
+                }))
+            }
+            HStack {
+                Button {
+                    localFixture.channels.append(FixtureChannel(num: localFixture.channels.count + 1, name: "New Channel", type: "Default"))
+                } label: {
+                    Text("New Channel")
+                }
+            }
+        }
+        .onAppear {
+            localFixture = fixture
+        }
+        .onDisappear {
+            fixture = localFixture
+        }
+        .padding(20)
+    }
+}
+
+struct ChannelConfigurationView: View {
+    @Binding var channel: FixtureChannel
+    
+    var body: some View {
+        Text("Channel Configuration")
     }
 }
 
@@ -140,6 +335,13 @@ struct sACNSettingsView: View {
     }
 }
 
+struct universeManagementView: View {
+    var body: some View {
+        Text("Universe Management")
+    }
+}
+
 #Preview {
-    SetupView(settings: .constant(PrismDMXDocument().workspace.settings))
+    //SetupView(settings: .constant(PrismDMXDocument().workspace.settings))
+    FixtureSettingsView(groups: .constant(PrismDMXDocument().workspace.settings.fixtureGroups), fixtureTemplates: .constant([]))
 }

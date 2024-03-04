@@ -2,7 +2,7 @@
 //  main.swift
 //  PrismDMX
 //
-//  Created by Christian Savage on 29.02.24.
+//  Created by simpelMIC on 29.02.24.
 //
 
 import Foundation
