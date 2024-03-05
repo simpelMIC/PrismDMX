@@ -50,7 +50,6 @@ struct FixtureChannel: Identifiable, Codable {
 
 struct Universe: Identifiable, Codable {
     var id = UUID()
-    var num: Int
     var channels: [DMXChannel]
     var enabled: Bool
 }

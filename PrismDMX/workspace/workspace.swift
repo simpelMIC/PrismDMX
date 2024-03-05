@@ -10,6 +10,7 @@ import SwiftUI
 
 struct MainWorkspaceView: View {
     @Binding var workspace: Workspace
+    @Binding var universes: [Universe]
     
     @State var sideBarVisibility: NavigationSplitViewVisibility = .doubleColumn
     @State var selectedSideBarItem: SideBarItem = .channels
@@ -25,7 +26,7 @@ struct MainWorkspaceView: View {
         } detail: {
             switch selectedSideBarItem {
             case .setup:
-                SetupView(settings: $workspace.settings)
+                SetupView(settings: $workspace.settings, universes: $universes)
             case .channels:
                 ChannelsView()
             case .playbacks:
@@ -56,5 +57,5 @@ struct PlaybackView: View {
 }
 
 #Preview {
-    ContentView(document: .constant(PrismDMXDocument()))
+    ContentView(document: .constant(PrismDMXDocument()), universes: .constant([]))
 }

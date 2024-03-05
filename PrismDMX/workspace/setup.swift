@@ -11,17 +11,18 @@ import Combine
 
 struct SetupView: View {
     @Binding var settings: Settings
+    @Binding var universes: [Universe]
     
     var body: some View {
         NavigationStack {
             List {
-                NavigationLink(destination: FixtureSettingsView(groups: $settings.fixtureGroups, fixtureTemplates: $fixturePresets)) {
+                NavigationLink(destination: FixtureGroupSettingsView(groups: $settings.fixtureGroups, fixtureTemplates: $fixturePresets)) {
                     Text("Fixture Settings")
                 }
                 NavigationLink(destination: sACNSettingsView(sACNSettings: $settings.sACNSettings)) {
                     Text("sACN Settings")
                 }
-                NavigationLink(destination: universeManagementView()) {
+                NavigationLink(destination: universeManagementView(universes: $universes)) {
                     Text("Universe Management")
                 }
             }
@@ -45,7 +46,7 @@ struct SetupView: View {
     ]
 }
 
-struct FixtureSettingsView: View {
+struct FixtureGroupSettingsView: View {
     @Binding var groups: [FixtureGroup]
     @State var localGroups: [FixtureGroup] = []
     
@@ -79,7 +80,7 @@ struct FixtureSettingsView: View {
                         groups.append(FixtureGroup(name: "New Group", fixtures: []))
                         localGroups.append(FixtureGroup(name: "New Group", fixtures: []))
                     } label: {
-                        Text("+")
+                        Text("New Group")
                     }
                     .padding(.bottom, 5)
                 }
@@ -107,7 +108,7 @@ struct FixtureSettingsView: View {
                         fixtureTemplates.append(Fixture(name: "New Fixture Template", type: "Template", startingChannel: 1, universe: 1, channels: []))
                         localFixtureTemplates.append(Fixture(name: "New Fixture Template", type: "Template", startingChannel: 1, universe: 1, channels: []))
                     } label: {
-                        Text("+")
+                        Text("New Template")
                     }
                     .padding(.bottom, 5)
                 }
@@ -292,11 +293,47 @@ struct FixtureConfigurationView: View {
     }
 }
 
+//CCV1
 struct ChannelConfigurationView: View {
     @Binding var channel: FixtureChannel
+    @State var localChannel: FixtureChannel = FixtureChannel(num: 1, name: "If you see this send a report to the Developer. Code: CCV1", type: "temp")
     
     var body: some View {
-        Text("Channel Configuration")
+        ScrollView {
+            VStack {
+                Text(localChannel.name)
+                    .font(.system(.largeTitle, weight: .semibold))
+                HStack {
+                    Text("Name")
+                    TextField("Name", text: $localChannel.name)
+                }
+                HStack {
+                    Text("Number: ")
+                    Button {
+                        if localChannel.num < 512 {
+                            localChannel.num = localChannel.num + 1
+                        }
+                    } label: {
+                        Text("+")
+                    }
+                    Text(String(localChannel.num))
+                    Button  {
+                        if localChannel.num > 1 {
+                            localChannel.num = localChannel.num - 1
+                        }
+                    } label: {
+                        Text("-")
+                    }
+                }
+            }
+        }
+        .onAppear {
+            localChannel = channel
+        }
+        .onDisappear {
+            channel = localChannel
+        }
+        .padding()
     }
 }
 
@@ -318,15 +355,15 @@ struct sACNSettingsView: View {
                         Text("Host")
                         TextField("127.0.0.1", text: $sACNSettings.host)
                     }
+                    HStack {
+                        Text("Port")
+                        TextField("5568", text: $sACNSettings.port)
+                    }
                 }
                 Section("sACN") {
                     HStack {
                         Text("Use built in sACN Engine:")
                         Text("\(sACNSettings.useBuiltInEngine ? "true" : "false")")
-                    }
-                    HStack {
-                        Text("Port")
-                        TextField("5568", text: $sACNSettings.port)
                     }
                 }
             }
@@ -336,12 +373,32 @@ struct sACNSettingsView: View {
 }
 
 struct universeManagementView: View {
+    @Binding var universes: [Universe]
+    
     var body: some View {
         Text("Universe Management")
+            .font(.system(.largeTitle, weight: .semibold))
+        List(universes.indices, id: \.self) { index in
+            CheckView(state: $universes[index].enabled, name: "Universe \(index + 1)")
+        }
+    }
+}
+
+struct CheckView: View {
+    @Binding var state: Bool
+    @State var name: String
+    
+    var body: some View {
+        HStack {
+            Toggle(isOn: $state, label: {
+                Text(name)
+            })
+        }
     }
 }
 
 #Preview {
     //SetupView(settings: .constant(PrismDMXDocument().workspace.settings))
-    FixtureSettingsView(groups: .constant(PrismDMXDocument().workspace.settings.fixtureGroups), fixtureTemplates: .constant([]))
+    //FixtureSettingsView(groups: .constant(PrismDMXDocument().workspace.settings.fixtureGroups), fixtureTemplates: .constant([]))
+    universeManagementView(universes: .constant([Universe(channels: Array(repeating: DMXChannel(value: 0), count: 512), enabled: false)]))
 }

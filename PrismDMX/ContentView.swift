@@ -9,12 +9,13 @@ import SwiftUI
 
 struct ContentView: View {
     @Binding var document: PrismDMXDocument
+    @Binding var universes: [Universe]
 
     var body: some View {
-        MainWorkspaceView(workspace: $document.workspace)
+        MainWorkspaceView(workspace: $document.workspace, universes: $universes)
     }
 }
 
 #Preview {
-    ContentView(document: .constant(PrismDMXDocument()))
+    ContentView(document: .constant(PrismDMXDocument()), universes: .constant([]))
 }
