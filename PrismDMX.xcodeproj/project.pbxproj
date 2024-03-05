@@ -24,6 +24,7 @@
 		6F6D5F912B94C4A400DDA3D6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6F6D5F902B94C4A400DDA3D6 /* README.md */; };
 		6F6D5F922B94C4A400DDA3D6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6F6D5F902B94C4A400DDA3D6 /* README.md */; };
 		6F6D5F932B94C4A400DDA3D6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6F6D5F902B94C4A400DDA3D6 /* README.md */; };
+		6F93C0892B97B3020056B15C /* sACN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F93C0882B97B3020056B15C /* sACN.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		6F6D5F8A2B93461800DDA3D6 /* var.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = var.swift; sourceTree = "<group>"; };
 		6F6D5F8E2B938C2700DDA3D6 /* presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = presets.swift; sourceTree = "<group>"; };
 		6F6D5F902B94C4A400DDA3D6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		6F93C0882B97B3020056B15C /* sACN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sACN.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 		6F6D5F502B911C8700DDA3D6 /* PrismDMX */ = {
 			isa = PBXGroup;
 			children = (
+				6F93C0872B97B28D0056B15C /* sACN */,
 				6F6D5F892B9345E200DDA3D6 /* prismDMXvar */,
 				6F6D5F7F2B91213400DDA3D6 /* workspace */,
 				6F6D5F512B911C8700DDA3D6 /* PrismDMXApp.swift */,
@@ -169,6 +172,14 @@
 				6F6D5F8A2B93461800DDA3D6 /* var.swift */,
 			);
 			path = prismDMXvar;
+			sourceTree = "<group>";
+		};
+		6F93C0872B97B28D0056B15C /* sACN */ = {
+			isa = PBXGroup;
+			children = (
+				6F93C0882B97B3020056B15C /* sACN.swift */,
+			);
+			path = sACN;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -313,6 +324,7 @@
 			files = (
 				6F6D5F542B911C8700DDA3D6 /* PrismDMXDocument.swift in Sources */,
 				6F6D5F8B2B93461800DDA3D6 /* var.swift in Sources */,
+				6F93C0892B97B3020056B15C /* sACN.swift in Sources */,
 				6F6D5F522B911C8700DDA3D6 /* PrismDMXApp.swift in Sources */,
 				6F6D5F812B91214400DDA3D6 /* workspace.swift in Sources */,
 				6F6D5F8F2B938C2700DDA3D6 /* presets.swift in Sources */,
