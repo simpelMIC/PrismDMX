@@ -5,6 +5,19 @@
 //  Created by simpelMIC on 05.03.24.
 //
 
+/* Variable Definitions
+ struct Universe: Identifiable, Codable {
+     var id = UUID()
+     var channels: [DMXChannel]
+     var enabled: Bool
+ }
+
+ struct DMXChannel: Equatable, Identifiable, Codable {
+     var id = UUID()
+     var value: Double
+ }
+ */
+
 import Foundation
 import SwiftUI
 import Network
@@ -37,6 +50,6 @@ class sACNController {
     }
     
     func sendDMXData() {
-        
+        print("sendDMXData")
     }
 }
