@@ -16,9 +16,7 @@ PrismDMX is a Swift application designed to facilitate the control and managemen
 
 ## Getting Started
 
-To get started with PrismDMX, follow these steps:
-
-**Install on Ubuntu**: Install PrismDMX with https://github.com/simpelMIC/PrismDMX/Installation/install_pmx.sh or with the following command:
+**Installation on Ubuntu**: Install PrismDMX with https://github.com/simpelMIC/PrismDMX/Installation/install_pmx.sh or with the following command:
 ```
 bash -c 'sudo apt update && sudo apt install -y git && git clone https://github.com/simpelMIC/PrismDMX.git temp && mv temp/* temp/.* . 2>/dev/null || true && rm -rf temp && chmod +x install_swift.sh run.sh build.sh install_required_packages.sh && ./install_required_packages.sh && ./install_swift.sh && ./build.sh && echo "Installation done..." && read -p "Would you like to launch PrismDMX? (y/n): " LAUNCH && [[ "$LAUNCH" == "y" ]] && echo "Launching..." && ./run.sh || echo "Done"'
 ```
