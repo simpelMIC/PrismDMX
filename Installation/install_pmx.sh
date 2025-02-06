@@ -6,7 +6,6 @@ sudo apt update
 sudo apt install -y git
 
 echo "Downloading program files..."
-# wget -qO- https://github.com/simpelMIC/PrismDMX/archive/refs/heads/main.zip | bsdtar -xvf- --strip-components=1
 
 git clone https://github.com/simpelMIC/PrismDMX.git temp
 mv temp/* temp/.* .
