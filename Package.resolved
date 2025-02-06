@@ -1,5 +1,5 @@
 {
-  "originHash" : "20833830a399dd1ad83ed02a1e2d3d5021f1f934b0d857aaa68f5b24a738b559",
+  "originHash" : "1845687828b11dc6d24aa53ba9df8d7f1b0b5f02aeea67afeeb01cac6817b5c5",
   "pins" : [
     {
       "identity" : "aexml",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "38f7d00b23ecd891e1ee656fa6aeebd6ba04ecc3",
         "version" : "4.6.1"
+      }
+    },
+    {
+      "identity" : "example-package-figlet",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/example-package-figlet",
+      "state" : {
+        "branch" : "main",
+        "revision" : "166eef46de0b094d6d1966e749f727d6c4beba0e"
       }
     },
     {

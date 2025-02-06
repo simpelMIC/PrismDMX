@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:PrismDMX}",
+            "name": "Debug PrismDMX",
+            "program": "${workspaceFolder:PrismDMX}/.build/debug/PrismDMX",
+            "preLaunchTask": "swift: Build Debug PrismDMX"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:PrismDMX}",
+            "name": "Release PrismDMX",
+            "program": "${workspaceFolder:PrismDMX}/.build/release/PrismDMX",
+            "preLaunchTask": "swift: Build Release PrismDMX"
+        }
+    ]
+}

@@ -14,7 +14,8 @@ let package = Package(
         .package(
             url: "https://github.com/stackotter/swift-bundler",
             revision: "412e8a3838456654138ac807406aba27599762f1"
-        )
+        ),
+        .package(url: "https://github.com/apple/example-package-figlet", branch: "main"),
     ],
     targets: [
         .executableTarget(
@@ -22,7 +23,8 @@ let package = Package(
             dependencies: [
                 .product(name: "SwiftCrossUI", package: "swift-cross-ui"),
                 .product(name: "DefaultBackend", package: "swift-cross-ui"),
-                .product(name: "SwiftBundlerRuntime", package: "swift-bundler", condition: .when(platforms: [.macOS, .linux]))
+                .product(name: "SwiftBundlerRuntime", package: "swift-bundler", condition: .when(platforms: [.macOS, .linux])),
+                .product(name: "Figlet", package: "example-package-figlet"),
             ]
         )
     ]

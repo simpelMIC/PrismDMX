@@ -3,12 +3,16 @@
 
 import DefaultBackend
 import SwiftCrossUI
+import Figlet
 
 @main
 struct PrismDMXApp: App {
     var body: some Scene {
         WindowGroup() {
-            Text("Test")
+            Text("Hello World!")
+            .onAppear() {
+                Figlet.say("PrismDMX")
+            }
         }
     }
 }
