@@ -7,11 +7,21 @@ sudo apt-get upgrade -y
 # Install dependencies
 sudo apt-get install -y clang libicu-dev libssl-dev libblocksruntime-dev
 
-# Download Swift 6.0 (change to the latest Swift version if needed)
-UBUNTU_VERSION="20.04"
-UBUNTU_VERSION_RAW="2004"
-SWIFT_VERSION="6.0.3"
-SWIFT_URL="https://download.swift.org/swift-${SWIFT_VERSION}-release/ubuntu${UBUNTU_VERSION_RAW}/swift-${SWIFT_VERSION}-RELEASE/swift-${SWIFT_VERSION}-RELEASE-ubuntu${UBUNTU_VERSION}.tar.gz"
+# Download Swift
+
+read -p "For which Ubuntu-Version are you installing Swift? (e.g. 20.04): " UBUNTU_VERSION
+read -p "Which Swift-Version would you like to install? (e.g. 6.0.3): " SWIFT_VERSION
+read -p "Would you like to install the aarch64 Version? (y/n): " AARCHYN
+
+if [[ "$AARCHYN" == "y" ]]; then
+AARCH="-aarch64"
+else
+AARCH=""
+fi
+
+UBUNTU_VERSION_RAW="${UBUNTU_VERSION//./}"
+
+SWIFT_URL="https://download.swift.org/swift-${SWIFT_VERSION}-release/ubuntu${UBUNTU_VERSION_RAW}${AARCH}/swift-${SWIFT_VERSION}-RELEASE/swift-${SWIFT_VERSION}-RELEASE-ubuntu${UBUNTU_VERSION}${AARCH}.tar.gz"
 
 # Download Swift
 echo "Downloading Swift ${SWIFT_VERSION}..."
@@ -22,7 +32,7 @@ echo "Extracting Swift..."
 tar -xvzf swift-${SWIFT_VERSION}.tar.gz
 
 # Move Swift to /usr/local
-echo "Installing Swift..."
+echo "Moving directories..."
 sudo mv swift-${SWIFT_VERSION}-RELEASE-ubuntu${UBUNTU_VERSION} /usr/local/swift
 
 # Add Swift to PATH
